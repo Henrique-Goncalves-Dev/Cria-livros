@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap');
+
+:root {
+  color-scheme: light;
+  --ink: #242227;
+  --plum: #302337;
+  --plum-soft: #4f3459;
+  --lime: #d7ed6a;
+  --paper: #f4f5ee;
+  --paper-white: #fffefa;
+  --malva: #b8748f;
+  --line: #dedde2;
+  --muted: #67616b;
+  --error: #9c3434;
+  --success: #315943;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 0; min-height: 100vh; }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid #7c9d00; outline-offset: 3px; }
+

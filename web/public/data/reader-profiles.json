@@ -1,0 +1,62 @@
+{
+  "intro": "Este resultado organiza preferências de leitura que apareceram nas suas respostas. Os perfis são referências flexíveis: podem se combinar e mudar conforme suas experiências, rotina e fase de vida. Eles não avaliam personalidade, capacidade ou nível de inteligência.",
+  "methodology": "As quatro dimensões do Mapeamento de Perfil Leitor são referências próprias de curadoria. O questionário não é uma versão do DISC, não mede fatores comportamentais clínicos ou profissionais e não constitui teste psicológico, diagnóstico ou avaliação de personalidade. O perfil predominante e o secundário indicam tendências iniciais e devem ser lidos junto das respostas individuais sobre gêneros, temas, conteúdos a evitar, tempo disponível e momento de leitura.",
+  "profiles": [
+    {
+      "key": "explorador",
+      "name": "Explorador",
+      "tagline": "A curiosidade como ponto de partida",
+      "motivation": "Descobrir",
+      "description": "O perfil Explorador representa o leitor que se aproxima dos livros movido pela curiosidade, pela novidade e pela vontade de ampliar seus horizontes. Para ele, a leitura é uma oportunidade de descobrir universos, conhecer realidades diferentes e experimentar assuntos que talvez nunca tivesse considerado. Seu interesse costuma surgir diante da possibilidade de encontrar algo novo: um autor desconhecido, um gênero diferente, uma narrativa inesperada ou uma perspectiva capaz de provocar novas perguntas.",
+      "relationship": "Esse leitor tende a valorizar a variedade e a liberdade de escolha. Pode transitar entre gêneros bastante distintos, alternando entre ficção, fantasia, aventura, suspense, romances e temas contemporâneos. Nem sempre procura repetir experiências literárias; muitas vezes, sente-se estimulado justamente pelo que ainda não conhece. Recomendações que apresentem uma proposta diferente, uma premissa instigante ou um caminho fora de sua zona de conforto podem despertar seu interesse.",
+      "strengths": "Sua abertura para experimentar favorece a descoberta de novos autores, estilos e assuntos. Costuma demonstrar disposição para explorar possibilidades, conectar ideias e ampliar repertórios. Pode ser um leitor que gosta de conversar sobre descobertas, compartilhar indicações e incentivar outras pessoas a conhecer histórias diferentes.",
+      "curationCare": "Por gostar de novidades, pode perder o interesse quando a leitura parece previsível ou demora a apresentar elementos que despertem sua curiosidade. Também pode iniciar diferentes livros ao mesmo tempo ou ter dificuldade para escolher entre muitas possibilidades. Isso não significa falta de interesse pela leitura, mas uma preferência por experiências dinâmicas e variadas.",
+      "experience": "O Explorador tende a aproveitar experiências que tragam surpresa, diversidade e descoberta. Uma curadoria com um título fora de suas escolhas habituais, acompanhado de uma explicação sobre o que torna aquela obra singular, pode tornar a experiência especialmente atrativa.",
+      "keywords": ["Novidade", "Diversidade", "Descoberta", "Aventura", "Experimentação"],
+      "genres": "Fantasia, ficção científica, aventura, distopias, suspense, ficção especulativa, romances contemporâneos e narrativas com universos ou perspectivas pouco convencionais.",
+      "message": "Você encontra nos livros a oportunidade de descobrir o que ainda não conhece. Sua experiência literária ganha força quando existe espaço para explorar, experimentar e se surpreender."
+    },
+    {
+      "key": "imersivo",
+      "name": "Imersivo",
+      "tagline": "A conexão emocional como ponto de partida",
+      "motivation": "Sentir",
+      "description": "O perfil Imersivo representa o leitor que busca estabelecer uma conexão afetiva com as histórias. Para ele, ler é entrar em contato com personagens, sentimentos, conflitos e experiências que despertam identificação ou emoção. A leitura pode funcionar como uma forma de se reconhecer em outras narrativas, compreender diferentes vivências e experimentar sentimentos por meio das histórias.",
+      "relationship": "Esse leitor tende a valorizar o desenvolvimento dos personagens, a construção dos relacionamentos e a capacidade de uma narrativa de envolver emocionalmente. Pode se interessar por histórias que abordem amor, amizade, família, perdas, recomeços, amadurecimento e desafios pessoais. Muitas vezes, lembra-se de cenas, diálogos ou personagens por bastante tempo depois de terminar um livro. Uma recomendação costuma chamar sua atenção quando apresenta uma história com a qual possa criar vínculo.",
+      "strengths": "Sua conexão com as narrativas favorece uma leitura sensível e envolvente. Pode demonstrar interesse pelas motivações dos personagens, pelas relações humanas e pelos diferentes modos de sentir e viver. Histórias que permitem identificação podem tornar a leitura uma experiência significativa, acolhedora e memorável.",
+      "curationCare": "Quando não encontra identificação com os personagens ou não se envolve com os acontecimentos, pode ter dificuldade para continuar a leitura. Temas muito distantes de seus interesses emocionais ou narrativas percebidas como frias podem gerar menor conexão. Por isso, conhecer os assuntos que deseja encontrar — e aqueles que prefere evitar — é especialmente importante para uma indicação adequada.",
+      "experience": "O Imersivo tende a valorizar uma curadoria que apresente o clima da história e a experiência emocional que ela pode proporcionar, sem revelar acontecimentos importantes. Uma mensagem personalizada explicando por que aquele livro foi escolhido pode fortalecer a sensação de que a indicação foi pensada para ele.",
+      "keywords": ["Conexão", "Identificação", "Emoção", "Vínculos", "Envolvimento"],
+      "genres": "Romance, drama, ficção contemporânea, histórias de amadurecimento, narrativas familiares, ficção histórica com foco humano e histórias inspiradoras.",
+      "message": "Você encontra nos livros a possibilidade de sentir, se reconhecer e viver outras perspectivas. Uma história especial é aquela que continua com você mesmo depois da última página."
+    },
+    {
+      "key": "investigador",
+      "name": "Investigador",
+      "tagline": "O conhecimento como ponto de partida",
+      "motivation": "Aprender",
+      "description": "O perfil Investigador representa o leitor que se aproxima dos livros movido pelo desejo de compreender, aprender e aprofundar conhecimentos. Para ele, a leitura é uma ferramenta de descoberta intelectual e ampliação da visão de mundo. Um livro desperta seu interesse quando oferece informações, apresenta argumentos, explica fenômenos ou propõe reflexões que ajudam a compreender melhor determinado assunto.",
+      "relationship": "Esse leitor tende a valorizar conteúdos consistentes, ideias bem desenvolvidas e abordagens que estimulem o pensamento crítico. Pode demonstrar interesse por temas como comportamento humano, sociedade, ciência, história, filosofia, economia, cultura e desenvolvimento pessoal. Gosta de fazer perguntas, relacionar informações e refletir sobre o que está lendo. Também pode apreciar livros que apresentem diferentes pontos de vista ou aprofundem assuntos que já despertam sua curiosidade.",
+      "strengths": "Sua disposição para investigar favorece a busca por contexto, explicações e novas perspectivas. Costuma valorizar o aprendizado e pode transformar a leitura em fonte de repertório para a vida pessoal, acadêmica ou profissional. Tem interesse em compreender não apenas o que acontece, mas também por que acontece e quais ideias podem ser extraídas daquela experiência.",
+      "curationCare": "Pode demonstrar menor interesse por obras que considera pouco aprofundadas ou que não apresentam um tema claramente relevante para suas curiosidades. Em alguns momentos, pode priorizar a busca por informações e aprendizados, deixando em segundo plano leituras escolhidas apenas pelo entretenimento. Uma curadoria que explique o assunto central e o potencial de reflexão da obra tende a ser mais eficiente.",
+      "experience": "O Investigador tende a aproveitar recomendações acompanhadas de uma breve contextualização: qual assunto o livro aborda, que perguntas ele pode ajudar a explorar e por que aquela obra pode ser interessante. A indicação deve considerar o nível de aprofundamento desejado e evitar presumir que todo livro de não ficção será adequado.",
+      "keywords": ["Conhecimento", "Reflexão", "Investigação", "Informação", "Aprofundamento"],
+      "genres": "Psicologia, filosofia, história, biografias, ciências, comportamento humano, sociologia, ensaios, desenvolvimento pessoal e outras obras de não ficção.",
+      "message": "Você encontra nos livros caminhos para compreender melhor o mundo e ampliar suas ideias. Sua experiência literária ganha significado quando cada leitura abre espaço para novas perguntas e aprendizados."
+    },
+    {
+      "key": "contemplativo",
+      "name": "Contemplativo",
+      "tagline": "A apreciação da experiência como ponto de partida",
+      "motivation": "Apreciar",
+      "description": "O perfil Contemplativo representa o leitor que valoriza a experiência de leitura em seus detalhes. Para ele, o livro não precisa oferecer apenas uma trama acelerada ou uma grande quantidade de informações: a linguagem, a atmosfera, o ritmo e as sensações construídas ao longo das páginas também são parte essencial da experiência. Ler pode ser uma forma de desacelerar, observar, imaginar e apreciar o contato com as palavras.",
+      "relationship": "Esse leitor tende a demonstrar interesse por textos que ofereçam espaço para interpretação, sensibilidade e reflexão. Pode apreciar a escolha das palavras, a construção de imagens, a musicalidade da escrita e a maneira como uma história cria determinada atmosfera. Nem sempre tem pressa para concluir um livro; pode preferir ler aos poucos, retomar trechos e permanecer algum tempo pensando sobre o que leu. Também pode valorizar edições cuidadosas e elementos visuais que complementem a experiência.",
+      "strengths": "Sua atenção aos detalhes favorece uma relação sensível com a linguagem e com as diferentes camadas de uma obra. Pode encontrar significado em pequenos acontecimentos, imagens, metáforas e reflexões. Valoriza o percurso da leitura, não apenas o desfecho, e pode apreciar obras que convidem à pausa e à interpretação pessoal.",
+      "curationCare": "Pode sentir menor afinidade com narrativas muito aceleradas, linguagem excessivamente direta ou livros que priorizem apenas a sucessão de acontecimentos. Também pode precisar de mais tempo para concluir uma obra, especialmente quando prefere ler em momentos tranquilos. A recomendação deve respeitar seu ritmo e não associar velocidade de leitura a qualidade ou dedicação.",
+      "experience": "O Contemplativo tende a valorizar uma experiência literária cuidadosa, com atenção à apresentação do livro, à linguagem e à atmosfera da obra. Uma curadoria que destaque a beleza da escrita, o ritmo ou as sensações que o livro pode despertar pode tornar a indicação mais significativa.",
+      "keywords": ["Sensibilidade", "Profundidade", "Linguagem", "Contemplação", "Apreciação"],
+      "genres": "Poesia, literatura clássica, crônicas, contos, literatura intimista, ensaios literários e obras reconhecidas pela linguagem ou construção estética.",
+      "message": "Você encontra nos livros um convite para desacelerar e perceber os detalhes. Sua experiência literária está na beleza do percurso, nas palavras e nas reflexões que permanecem."
+    }
+  ]
+}

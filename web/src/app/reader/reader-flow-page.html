@@ -1,0 +1,275 @@
+<div class="site-shell">
+  <header class="site-header">
+    <a class="wordmark" routerLink="/" aria-label="Cria Livros, início">
+      <span class="wordmark-symbol" aria-hidden="true">c</span>
+      <span>Cria <strong>Livros</strong></span>
+    </a>
+    <nav class="header-actions" aria-label="Navegação">
+      @if (user) {
+        <span class="member-email">{{ user.email }}</span>
+        <button class="text-button" type="button" (click)="signOut()">Sair</button>
+      }
+      <a class="team-link" routerLink="/admin">Acesso da equipe</a>
+    </nav>
+  </header>
+
+  <main class="experience-layout">
+    <aside class="journey-rail" aria-label="Etapas da experiência">
+      <div class="rail-copy">
+        <p class="rail-kicker">Uma experiência de leitura</p>
+        <h1>Encontre histórias que conversam com você.</h1>
+        <p class="rail-description">Um primeiro encontro com o seu jeito de ler — e com novas possibilidades.</p>
+      </div>
+      <ol class="journey-steps">
+        <li [class.is-current]="step === 'access'" [class.is-complete]="step !== 'access'">
+          <span class="step-mark">01</span><span>Cadastro</span>
+        </li>
+        <li [class.is-current]="step === 'payment'" [class.is-complete]="step === 'questionnaire' || step === 'result'">
+          <span class="step-mark">02</span><span>Pagamento</span>
+        </li>
+        <li [class.is-current]="step === 'questionnaire' || step === 'result'" [class.is-complete]="step === 'result'">
+          <span class="step-mark">03</span><span>Mapeamento</span>
+        </li>
+      </ol>
+      <p class="rail-note">Quatro caminhos leitores. Muitas maneiras de se apaixonar por uma história.</p>
+    </aside>
+
+    <section class="flow-panel" aria-live="polite">
+      @if (errorMessage) {
+        <p class="feedback feedback-error" role="alert">{{ errorMessage }}</p>
+      }
+      @if (notice) {
+        <p class="feedback feedback-success" role="status">{{ notice }}</p>
+      }
+
+      @if (step === 'access') {
+        <section class="flow-section access-section">
+          @if (!user) {
+            <p class="section-eyebrow">Comece por aqui</p>
+            <h2>Seu lugar na comunidade começa com um cadastro.</h2>
+            <p class="section-intro">Vamos guardar seu progresso para que você possa voltar a qualquer momento.</p>
+            <div class="mode-switch" role="group" aria-label="Acesso à conta">
+              <button type="button" [class.active]="authMode === 'signup'" (click)="authMode = 'signup'; errorMessage = ''; notice = ''">Criar conta</button>
+              <button type="button" [class.active]="authMode === 'login'" (click)="authMode = 'login'; errorMessage = ''; notice = ''">Já tenho conta</button>
+            </div>
+          } @else {
+            <p class="section-eyebrow">Complete seu cadastro</p>
+            <h2>Precisamos de mais alguns dados antes do pagamento.</h2>
+          }
+
+          <form class="form-stack" (ngSubmit)="submitAccess()">
+            @if (authMode !== 'login') {
+              <label class="field-label">
+                <span>Nome completo</span>
+                <input name="fullName" [(ngModel)]="fullName" autocomplete="name" maxlength="120" required placeholder="Como podemos chamar você?" />
+              </label>
+              <label class="field-label">
+                <span>Número para contato</span>
+                <input name="phone" [(ngModel)]="phone" type="tel" autocomplete="tel" required placeholder="(11) 99999-9999" />
+              </label>
+            }
+            @if (!user) {
+              <label class="field-label">
+                <span>E-mail</span>
+                <input name="email" [(ngModel)]="email" type="email" autocomplete="email" required placeholder="voce@exemplo.com" />
+              </label>
+              <label class="field-label">
+                <span>Senha</span>
+                <input name="password" [(ngModel)]="password" type="password" autocomplete="{{ authMode === 'signup' ? 'new-password' : 'current-password' }}" minlength="8" required placeholder="Pelo menos 8 caracteres" />
+              </label>
+              @if (captchaSiteKey) {
+                <app-turnstile-widget [siteKey]="captchaSiteKey" (tokenChange)="captchaToken = $event" />
+              }
+            }
+            @if (authMode !== 'login') {
+              <label class="adult-check">
+                <input name="adultConfirmed" [(ngModel)]="adultConfirmed" type="checkbox" required />
+                <span>
+                  <span class="adult-copy">{{ adultText }}</span>
+                  <span class="adult-confirm">Confirmo que tenho 18 anos ou mais.</span>
+                </span>
+              </label>
+            }
+            <button class="primary-button" type="submit" [disabled]="loading">
+              {{ loading ? 'Aguarde…' : authMode === 'login' ? 'Entrar' : authMode === 'complete' ? 'Salvar cadastro' : 'Continuar para o pagamento' }}
+            </button>
+          </form>
+        </section>
+      }
+
+      @if (step === 'payment') {
+        <section class="flow-section payment-section">
+          <p class="section-eyebrow">Próxima etapa</p>
+          <h2>Confirme sua participação.</h2>
+          <p class="section-intro">O pagamento libera o Mapeamento de Perfil Leitor depois da conferência do comprovante.</p>
+
+          @if (payment?.status === 'pending_review') {
+            <div class="pending-state">
+              <span class="pending-icon" aria-hidden="true">…</span>
+              <div>
+                <h3>Comprovante recebido</h3>
+                <p>Estamos conferindo seu Pix de <strong>R$ 20,00</strong>. Assim que for aprovado, o mapeamento ficará disponível nesta tela.</p>
+              </div>
+            </div>
+          } @else {
+            @if (payment?.status === 'rejected') {
+              <p class="feedback feedback-error" role="status">Não conseguimos confirmar o comprovante. Confira o pagamento de R$ 20,00 e envie uma nova imagem.</p>
+            }
+            <div class="payment-grid">
+              <div class="pix-panel">
+                <div class="pix-heading">
+                  <span>Pagamento único</span>
+                  <strong>R$ 20,00</strong>
+                </div>
+                <p>Abra o aplicativo do seu banco e leia este QR Code Pix.</p>
+                <img class="pix-code" src="/pix-qr.png" alt="QR Code Pix para pagar R$ 20,00 ao Cria Livros" />
+                <p class="pix-caption">Depois, envie o comprovante para a equipe conferir.</p>
+              </div>
+              <div class="receipt-panel">
+                <span class="step-mark">Quando concluir o Pix</span>
+                <h3>Envie seu comprovante</h3>
+                <p>Aceitamos fotos JPG, PNG ou WebP de até 5 MB. O arquivo fica visível apenas para você e para a equipe que confere o pagamento.</p>
+                <label class="upload-control">
+                  <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onReceiptSelected($event)" />
+                  <span class="upload-icon" aria-hidden="true">＋</span>
+                  <span>{{ receiptFile?.name ?? 'Escolher comprovante' }}</span>
+                </label>
+                <button class="primary-button" type="button" (click)="sendPaymentProof()" [disabled]="loading || !receiptFile">
+                  {{ loading ? 'Enviando…' : 'Enviar comprovante' }}
+                </button>
+              </div>
+            </div>
+          }
+        </section>
+      }
+
+      @if (step === 'questionnaire') {
+        <section class="flow-section questionnaire-section">
+          <div class="question-progress">
+            <span>Mapeamento de perfil leitor</span>
+            <span>Pergunta {{ questionIndex + 1 }} de {{ questions.length }}</span>
+          </div>
+          <div class="progress-track" role="progressbar" [attr.aria-valuenow]="progressPercent" aria-valuemin="0" aria-valuemax="100">
+            <span [style.width.%]="progressPercent"></span>
+          </div>
+          <p class="section-eyebrow">{{ questionIndex < 12 ? 'O que move sua leitura' : 'Preferências e contexto' }}</p>
+          <h2>{{ currentQuestion.prompt }}</h2>
+          @if (currentQuestion.id === 'q13') {
+            <p class="section-intro">Marque quantos quiser. Você também pode escolher descobrir novos gêneros.</p>
+            <div class="choice-list multi-choice-list">
+              @for (genre of genres; track genre) {
+                <label class="choice-row" [class.is-selected]="isGenreSelected(genre)">
+                  <input type="checkbox" [checked]="isGenreSelected(genre)" (change)="toggleGenre(genre)" />
+                  <span>{{ genre }}</span>
+                </label>
+              }
+            </div>
+          } @else if (currentQuestion.options) {
+            <div class="choice-list">
+              @for (option of currentQuestion.options; track option.value) {
+                <label class="choice-row" [class.is-selected]="isOptionSelected(currentQuestion.id, option.value)">
+                  <input type="radio" [name]="currentQuestion.id" [value]="option.value" [checked]="isOptionSelected(currentQuestion.id, option.value)" (change)="setAnswer(currentQuestion.id, option.value)" />
+                  <span class="choice-letter">{{ option.value }}</span>
+                  <span>{{ option.label }}</span>
+                </label>
+              }
+            </div>
+          } @else if (currentQuestion.id === 'q21') {
+            <label class="field-label open-answer">
+              <span>Sua faixa de investimento</span>
+              <input type="text" [name]="currentQuestion.id" [ngModel]="answers[currentQuestion.id] ?? ''" (ngModelChange)="setAnswer(currentQuestion.id, $event)" placeholder="Ex.: entre R$ 30 e R$ 50" maxlength="120" />
+            </label>
+          } @else {
+            <label class="field-label open-answer">
+              <span>Sua resposta</span>
+              <textarea [name]="currentQuestion.id" [ngModel]="answers[currentQuestion.id] ?? ''" (ngModelChange)="setAnswer(currentQuestion.id, $event)" rows="4" maxlength="500" placeholder="Escreva o que vier à mente…"></textarea>
+              <small>Esta resposta é opcional.</small>
+            </label>
+          }
+          @if (questionError) { <p class="field-error" role="alert">{{ questionError }}</p> }
+          <div class="question-actions">
+            <button class="secondary-button" type="button" (click)="previousQuestion()" [disabled]="questionIndex === 0">Voltar</button>
+            <button class="primary-button" type="button" (click)="nextQuestion()" [disabled]="loading">
+              {{ loading ? 'Salvando…' : questionIndex === questions.length - 1 ? 'Ver meu perfil leitor' : 'Continuar' }}
+            </button>
+          </div>
+        </section>
+      }
+
+      @if (step === 'result') {
+        <section class="flow-section result-section">
+          <p class="section-eyebrow">Seu mapa de leitura</p>
+          <h2>Seu jeito de ler começa aqui, {{ fullName.split(' ')[0] }}.</h2>
+          @if (reportContent?.intro) { <p class="section-intro">{{ reportContent?.intro }}</p> }
+
+          @if (scoreResult) {
+            <div class="result-summary">
+              <div>
+                <span>Perfil predominante</span>
+                <strong>{{ primaryNames }}</strong>
+              </div>
+              @if (secondaryNames) {
+                <div>
+                  <span>Perfil secundário</span>
+                  <strong>{{ secondaryNames }}</strong>
+                </div>
+              }
+            </div>
+            <div class="score-strip" aria-label="Pontuação dos perfis">
+              @for (profile of reportContent?.profiles ?? []; track profile.key) {
+                <div class="score-item">
+                  <span>{{ profile.name }}</span>
+                  <strong>{{ scoreFor(profile.key) }}<small>/12</small></strong>
+                  <span class="score-bar"><i [style.width.%]="(scoreFor(profile.key) / 12) * 100"></i></span>
+                </div>
+              }
+            </div>
+
+            <div class="profile-reports">
+              @for (profile of selectedProfileContent; track profile.key) {
+                <article class="profile-report" [class.primary-profile]="isPrimary(profile.key)">
+                  <div class="profile-heading">
+                    <span>{{ isPrimary(profile.key) ? 'Predominante' : 'Secundário' }}</span>
+                    <h3>{{ profile.name }}</h3>
+                    <p>{{ profile.tagline }} · Motivação: {{ profile.motivation }}</p>
+                  </div>
+                  <section><h4>Descrição geral</h4><p>{{ profile.description }}</p></section>
+                  <section><h4>Como se relaciona com a leitura</h4><p>{{ profile.relationship }}</p></section>
+                  <section><h4>Potencialidades do perfil</h4><p>{{ profile.strengths }}</p></section>
+                  <section><h4>Pontos de atenção na curadoria</h4><p>{{ profile.curationCare }}</p></section>
+                  <section><h4>Experiência literária mais adequada</h4><p>{{ profile.experience }}</p></section>
+                  <section><h4>Gêneros e estilos que podem despertar interesse</h4><p>{{ profile.genres }}</p></section>
+                  <blockquote>{{ profile.message }}</blockquote>
+                </article>
+              }
+            </div>
+          }
+
+          <aside class="community-invitation">
+            <span class="invitation-mark" aria-hidden="true">✳</span>
+            <h3>Agora você é parte da Comunidade Cria Livros!</h3>
+            <p>Mais do que livros, queremos compartilhar histórias, descobertas e experiências que aproximam pessoas por meio da leitura.</p>
+            <p>Nossa comunidade é um cantinho para quem ama ler, quer descobrir novas histórias, trocar experiências e encontrar novas formas de se conectar com o universo literário.</p>
+            <p>Entre, fique à vontade e venha fazer parte dessa jornada com a gente. Afinal, toda boa história merece ser compartilhada.</p>
+            <a class="primary-button community-button" [href]="communityLink" target="_blank" rel="noopener noreferrer">Entrar na comunidade do WhatsApp</a>
+          </aside>
+
+          <div class="report-actions">
+            @if (reportError) { <p class="field-error" role="alert">{{ reportError }}</p> }
+            <button class="secondary-button" type="button" (click)="exportReport()" [disabled]="loading">
+              {{ loading ? 'Preparando PDF…' : 'Baixar meu relatório em PDF' }}
+            </button>
+          </div>
+          @if (reportContent?.methodology) {
+            <p class="method-note">{{ reportContent?.methodology }}</p>
+          }
+        </section>
+      }
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Cria Livros</span>
+    <span>Um espaço para ler, descobrir e compartilhar.</span>
+  </footer>
+</div>

@@ -1,0 +1,16 @@
+{
+  "name": "cria-livros",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fluxo de pagamento e mapeamento de perfil leitor da comunidade Cria Livros.",
+  "scripts": {
+    "dev": "concurrently -k \"npm run dev --prefix server\" \"npm start --prefix web\"",
+    "start": "npm run dev",
+    "build": "npm run build --prefix web && npm run check --prefix server",
+    "test": "npm run test --prefix web -- --watch=false && npm test --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "10.0.7"
+  }
+}

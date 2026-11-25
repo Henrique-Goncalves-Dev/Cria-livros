@@ -1,0 +1,124 @@
+<div class="admin-shell">
+  <header class="admin-header">
+    <a class="admin-brand" routerLink="/">Cria <strong>Livros</strong></a>
+    <nav>
+      <a routerLink="/">Experiência do leitor</a>
+      @if (user) { <button type="button" (click)="signOut()">Sair</button> }
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    @if (errorMessage) { <p class="admin-feedback is-error" role="alert">{{ errorMessage }}</p> }
+    @if (notice) { <p class="admin-feedback is-success" role="status">{{ notice }}</p> }
+
+    @if (passwordRecovery()) {
+      <section class="admin-auth">
+        <p class="admin-kicker">Recuperação de acesso</p>
+        <h1>Crie uma nova senha</h1>
+        <p>Use pelo menos oito caracteres. Depois de salvar, você entrará no painel.</p>
+        <form (ngSubmit)="completePasswordRecovery()" class="admin-form">
+          <label>Nova senha
+            <input name="newPassword" type="password" [(ngModel)]="newPassword" autocomplete="new-password" minlength="8" required />
+          </label>
+          <label>Confirme a nova senha
+            <input name="confirmPassword" type="password" [(ngModel)]="confirmPassword" autocomplete="new-password" minlength="8" required />
+          </label>
+          <button class="admin-primary" type="submit" [disabled]="loading">{{ loading ? 'Aguarde…' : 'Salvar nova senha' }}</button>
+        </form>
+      </section>
+    } @else if (!user) {
+      <section class="admin-auth">
+        <p class="admin-kicker">Área reservada</p>
+        <h1>Painel da equipe</h1>
+        <p>Confira comprovantes de Pix e mantenha atualizado o convite da comunidade.</p>
+        <div class="admin-switch">
+          <button type="button" [class.active]="mode === 'signup'" (click)="mode = 'signup'; errorMessage = ''; notice = ''">Criar conta mestre</button>
+          <button type="button" [class.active]="mode === 'login'" (click)="mode = 'login'; errorMessage = ''; notice = ''">Entrar</button>
+        </div>
+        <form (ngSubmit)="submitAccess()" class="admin-form">
+          <label>E-mail
+            <input name="email" type="email" [(ngModel)]="email" autocomplete="email" required />
+          </label>
+          <label>Senha
+            <input name="password" type="password" [(ngModel)]="password" autocomplete="{{ mode === 'signup' ? 'new-password' : 'current-password' }}" minlength="8" required placeholder="Pelo menos 8 caracteres" />
+          </label>
+          @if (captchaSiteKey) {
+            <app-turnstile-widget [siteKey]="captchaSiteKey" (tokenChange)="captchaToken = $event" />
+          }
+          @if (mode === 'login') {
+            <p class="admin-hint">A conta mestre já está cadastrada. Entre com o e-mail autorizado e a senha criada para o Supabase Auth.</p>
+          } @else {
+            <p class="admin-hint">Crie uma conta mestre usando o e-mail autorizado. Você precisará confirmar o endereço antes de entrar.</p>
+          }
+          <button class="admin-primary" type="submit" [disabled]="loading">{{ loading ? 'Aguarde…' : mode === 'signup' ? 'Criar conta mestre' : 'Entrar no painel' }}</button>
+          @if (mode === 'login') {
+            <button class="admin-forgot" type="button" (click)="requestPasswordReset()" [disabled]="loading">Esqueci minha senha</button>
+          }
+        </form>
+      </section>
+    } @else if (authorized) {
+      <section class="admin-title-row">
+        <div>
+          <p class="admin-kicker">Administração</p>
+          <h1>Pagamentos e comunidade</h1>
+        </div>
+        <button class="admin-secondary" type="button" (click)="loadAdminPanel()" [disabled]="loading">Atualizar fila</button>
+      </section>
+
+      <section class="admin-settings">
+        <div>
+          <h2>Link da comunidade</h2>
+          <p>Este convite aparece para quem conclui o mapeamento. A alteração vale para os quatro perfis.</p>
+        </div>
+        <form (ngSubmit)="saveCommunityLink()" class="link-form">
+          <label for="communityLink">Convite do WhatsApp</label>
+          <div class="link-input-row">
+            <input id="communityLink" name="communityLink" type="url" [(ngModel)]="communityLink" required />
+            <button class="admin-primary" type="submit" [disabled]="loading">Salvar link</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="queue-section">
+        <div class="queue-heading">
+          <div><p class="admin-kicker">Conferência manual</p><h2>Comprovantes para revisar</h2></div>
+          <span class="queue-count">{{ queue.length }}</span>
+        </div>
+        @if (queue.length === 0) {
+          <div class="empty-queue"><span aria-hidden="true">✓</span><p>Nenhum comprovante aguardando conferência.</p></div>
+        } @else {
+          <div class="payment-list">
+            @for (payment of queue; track payment.id) {
+              <article class="payment-review">
+                <div class="payment-person">
+                  <div class="person-initial">{{ payment.full_name.slice(0, 1) }}</div>
+                  <div><h3>{{ payment.full_name }}</h3><p>{{ payment.phone }} · {{ payment.submitted_at | date:'short' }}</p></div>
+                  <strong class="payment-amount">R$ {{ (payment.amount_cents / 100).toFixed(2).replace('.', ',') }}</strong>
+                </div>
+                <div class="proof-preview">
+                  @if (isImage(payment.receipt_path)) {
+                    <a [href]="payment.receipt_url" target="_blank" rel="noopener noreferrer"><img [src]="payment.receipt_url" alt="Comprovante Pix de {{ payment.full_name }}" /></a>
+                  } @else {
+                    <span class="proof-file">Arquivo antigo fora dos formatos de imagem aceitos.</span>
+                  }
+                </div>
+                @if (reviewChecks[payment.id]) {
+                  <fieldset class="verification-checklist">
+                    <legend>Antes de aprovar, confira no banco</legend>
+                    <label><input type="checkbox" [name]="'amount-' + payment.id" [(ngModel)]="reviewChecks[payment.id].amountVerified" /> O valor liquidado foi R$ 20,00.</label>
+                    <label><input type="checkbox" [name]="'recipient-' + payment.id" [(ngModel)]="reviewChecks[payment.id].recipientVerified" /> O destinatário corresponde ao QR Code recebido.</label>
+                    <label><input type="checkbox" [name]="'settled-' + payment.id" [(ngModel)]="reviewChecks[payment.id].transferSettled" /> A transferência aparece como concluída no extrato.</label>
+                  </fieldset>
+                }
+                <div class="review-actions">
+                  <button class="admin-secondary" type="button" (click)="review(payment, 'rejected')" [disabled]="loading">Recusar</button>
+                  <button class="admin-primary" type="button" (click)="review(payment, 'approved')" [disabled]="loading || !canApprovePayment(reviewChecks[payment.id])">Aprovar e liberar mapeamento</button>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </section>
+    }
+  </main>
+</div>
